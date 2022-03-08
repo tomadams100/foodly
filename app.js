@@ -1,5 +1,6 @@
 const { App } = require("@slack/bolt")
 require('dotenv').config()
+const homeView = require('./homeView/index')
 
 const app = new App ({
     token: process.env.SLACK_BOT_TOKEN,
@@ -9,11 +10,18 @@ const app = new App ({
     port: process.env.PORT || 3000
 });
 
+
 app.message('Hello', async ({ message, say }) => {
-    await say("Good Bye");
+	await say("Good Bye");
 });
 
-(async () => {
-    await app.start(process.env.PORT || 3000);
-    console.log("⚡️ Bolt app is running!");
-})();
+app.event('app_home_opened', async ({event, client, logger}) => {
+	try {
+		homeView(event, client)
+	}
+	catch(error) {
+		logger.error(error)
+	}
+});
+
+module.exports = app
