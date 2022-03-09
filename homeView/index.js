@@ -51,6 +51,29 @@ await client.views.publish({
             {
                 "type": "section",
                 "text": {
+                    "type": "plain_text",
+                    "text": "When should the morning message be sent?",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "timepicker",
+                        "initial_time": "09:00",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "Select time",
+                            "emoji": true
+                        },
+                        "action_id": "set_send_msg_time"
+                    }
+                ]
+            },
+            {
+                "type": "section",
+                "text": {
                     "type": "mrkdwn",
                     "text": "When does voting close each day?"
                 }
@@ -66,7 +89,7 @@ await client.views.publish({
                             "text": "Select time",
                             "emoji": true
                         },
-                        "action_id": "actionId-0"
+                        "action_id": "set_close_vote_time"
                     }
                 ]
             },
@@ -81,7 +104,7 @@ await client.views.publish({
                             "emoji": true
                         },
                         "value": "click_me_123",
-                        "action_id": "actionId-0"
+                        "action_id": "click_save_button"
                     }
                 ]
             }
@@ -89,4 +112,8 @@ await client.views.publish({
     }
 })
 }
+
 module.exports = homeView
+
+
+

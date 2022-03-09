@@ -2,13 +2,14 @@
   "dependencies": {
     "@slack/bolt": "^3.10.0",
     "cron": "^1.8.2",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15"
   },
   "name": "foodly",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",

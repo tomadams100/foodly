@@ -5,13 +5,14 @@ const welcomeMessage = require('./messages/welcomeMessage')
 const CronJob = require('cron').CronJob
 
 const app = new App ({
-    token: process.env.SLACK_BOT_TOKEN,
+	token: process.env.SLACK_BOT_TOKEN,
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     socketMode: true,
     appToken: process.env.SLACK_APP_TOKEN,
     port: process.env.PORT || 3000
 });
 
+require('./homeView/homeViewActions')(app)
 // ------- GET USER IDs ------------
 
 const allUserIds = []
@@ -20,9 +21,9 @@ const getAllUsersIds = async () => {
 	const allMembers = allUsers.members
 	allMembers.forEach(user => {
 		allUserIds.push(user.id)
-		console.log('user: ', user)
+		//console.log('user: ', user)
 	})
-	console.log('allUserIds: ', allUserIds)
+	//console.log('allUserIds: ', allUserIds)
 }
 
 getAllUsersIds()
@@ -30,7 +31,7 @@ getAllUsersIds()
 // ---------- MESSAGES ----------
 
 let job = new CronJob('0 28 9 * * *', async () => {
-	console.log("Message should be sent")
+	// console.log("Message should be sent")
 	await allUserIds.forEach(userId => {
 		app.client.chat.postMessage({
 			token: process.env.SLACK_BOT_TOKEN,
@@ -51,5 +52,7 @@ app.event('app_home_opened', async ({event, client, logger}) => {
 		logger.error(error)
 	}
 });
+
+
 
 module.exports = app
