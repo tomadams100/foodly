@@ -1,8 +1,6 @@
 const { App } = require("@slack/bolt")
 require('dotenv').config()
 const homeView = require('./homeView/index')
-const welcomeMessage = require('./messages/welcomeMessage')
-const CronJob = require('cron').CronJob
 
 const app = new App ({
 	token: process.env.SLACK_BOT_TOKEN,
@@ -13,35 +11,9 @@ const app = new App ({
 });
 
 require('./homeView/homeViewActions')(app)
-// ------- GET USER IDs ------------
 
-const allUserIds = []
-const getAllUsersIds = async () => {
-	const allUsers = await app.client.users.list({'token':process.env.SLACK_BOT_TOKEN})
-	const allMembers = allUsers.members
-	allMembers.forEach(user => {
-		allUserIds.push(user.id)
-		//console.log('user: ', user)
-	})
-	//console.log('allUserIds: ', allUserIds)
-}
-
-getAllUsersIds()
-
-// ---------- MESSAGES ----------
-
-let job = new CronJob('0 28 9 * * *', async () => {
-	// console.log("Message should be sent")
-	await allUserIds.forEach(userId => {
-		app.client.chat.postMessage({
-			token: process.env.SLACK_BOT_TOKEN,
-			channel: userId, 
-			text: welcomeMessage
-		})
-	})
-}, null, true, 'Europe/London')
-job.start()
-
+// Invoke Cron Jobs
+const cronJob = require('./cronJobs/morningMessage')(app)
 // --------- HOME ------------
 
 app.event('app_home_opened', async ({event, client, logger}) => {
@@ -52,7 +24,5 @@ app.event('app_home_opened', async ({event, client, logger}) => {
 		logger.error(error)
 	}
 });
-
-
 
 module.exports = app
