@@ -1,6 +1,5 @@
 const CronJob = require('cron').CronJob
 const welcomeMessage = require('../messages/welcomeMessage').blocks
-console.log('welcomeMessage: ', welcomeMessage)
 const DB = require('../DB')
 const moment = require('moment')
 

@@ -11,6 +11,7 @@ const app = new App ({
 });
 
 require('./homeView/homeViewActions')(app)
+require('./messages/welcomeMessageActions')(app)
 
 // Invoke Cron Jobs
 const morningMsgCronJob = require('./cronJobs/morningMessage')(app)

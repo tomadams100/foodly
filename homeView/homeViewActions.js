@@ -1,10 +1,5 @@
 const DB = require('../DB')
 
-// await DB.updateReminderMsg({
-//     id: ,
-//     time: '76376387'
-// })
-
 module.exports = function(app) {
     app.action('click_save_button', async ({ack}) => {
         await ack();

@@ -13,20 +13,17 @@
 		},
 		{
 			"type": "input",
+			"dispatch_action": true,
 			"element": {
-				"type": "plain_text_input",
-				"action_id": "plain_text_input-action",
-				"placeholder": {
-					"type": "plain_text",
-					"text": "Where do you want to eat?"
-				}
+				"action_id": "lunch_place_txt_box",
+				"type": "plain_text_input"
 			},
 			"label": {
 				"type": "plain_text",
-				"text": "Suggest a lunch place!",
+				"text": "Recommend where to eat:",
 				"emoji": true
 			}
-		},
+		  },
 		{
 			"type": "input",
 			"element": {
@@ -128,7 +125,7 @@
 						"emoji": true
 					},
 					"value": "click_me_123",
-					"action_id": "actionId-0"
+					"action_id": "click_submit_suggestion"
 				}
 			]
 		},
