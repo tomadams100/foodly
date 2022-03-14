@@ -1,14 +1,15 @@
 const DB = require('../DB')
 
-let morningMsgTime = ''
-let voteCloseTime = ''
-
-const getMorningMsgTime = async () => morningMsgTime = await DB.getMorningMsgTime()
-getMorningMsgTime()
-const getVoteCloseTime = async () => voteCloseTime = await DB.getVoteCloseTime() 
-getVoteCloseTime()
 
 const homeView = async (event, client) => {
+
+async function getMorningMsgTime () {
+    return await DB.getMorningMsgTime()
+}
+async function getVoteCloseTime () {
+    return await DB.getVoteCloseTime()
+}
+
 await client.views.publish({
     user_id: event.user,
     view: {
@@ -71,7 +72,7 @@ await client.views.publish({
                 "elements": [
                     {
                         "type": "timepicker",
-                        "initial_time": `${morningMsgTime}`,
+                        "initial_time": `${await getMorningMsgTime()}`,
                         "placeholder": {
                             "type": "plain_text",
                             "text": "Select time",
@@ -93,7 +94,7 @@ await client.views.publish({
                 "elements": [
                     {
                         "type": "timepicker",
-                        "initial_time": `${voteCloseTime}`,
+                        "initial_time": `${await getVoteCloseTime()}`,
                         "placeholder": {
                             "type": "plain_text",
                             "text": "Select time",
