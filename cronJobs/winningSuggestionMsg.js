@@ -1,23 +1,23 @@
 const CronJob = require('cron').CronJob
-const welcomeMessage = require('../messages/welcomeMessage')
+const winningSuggestionMsg = require('../messages/winningSuggestionMsg')
 const DB = require('../DB')
 const moment = require('moment')
 
 const cronJob = async (app) => {
-    new CronJob(`* * * * *`, async () => {
-        const morningMsgTime = await DB.getMorningMsgTime()
+    new CronJob('* * * * *', async () => {
+        const closeVoteTime = await DB.getVoteCloseTime()
         let now = moment().format('HH:mm')
-        if (now === morningMsgTime) {
+        if (now === closeVoteTime) {
             const allUserIds = await require('../foodlyFunctions/getUserIds')(app)
             allUserIds.forEach(userId => {
                 app.client.chat.postMessage({
                     token: process.env.SLACK_BOT_TOKEN,
                     channel: userId, 
-                    text: 'Morning welcome message'
+                    text: 'Winning suggestion message'
                 })
             })
         }
     }, null, true, 'Europe/London').start()
-
 }
+
 module.exports = cronJob

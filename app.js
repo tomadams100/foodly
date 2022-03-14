@@ -13,7 +13,8 @@ const app = new App ({
 require('./homeView/homeViewActions')(app)
 
 // Invoke Cron Jobs
-const cronJob = require('./cronJobs/morningMessage')(app)
+const morningMsgCronJob = require('./cronJobs/morningMessage')(app)
+const winningSuggestionMsgCronJob = require('./cronJobs/winningSuggestionMsg')(app)
 // --------- HOME ------------
 
 app.event('app_home_opened', async ({event, client, logger}) => {
