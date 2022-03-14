@@ -1,5 +1,6 @@
 const CronJob = require('cron').CronJob
-const welcomeMessage = require('../messages/welcomeMessage')
+const welcomeMessage = require('../messages/welcomeMessage').blocks
+console.log('welcomeMessage: ', welcomeMessage)
 const DB = require('../DB')
 const moment = require('moment')
 
@@ -12,8 +13,9 @@ const cronJob = async (app) => {
             allUserIds.forEach(userId => {
                 app.client.chat.postMessage({
                     token: process.env.SLACK_BOT_TOKEN,
-                    channel: userId, 
-                    text: 'Morning welcome message'
+                    channel: userId,
+                    text:'some text',
+                    blocks: welcomeMessage
                 })
             })
         }

@@ -1,4 +1,4 @@
-const winningSuggestionMsg = {
+{
 	"blocks": [
 		{
 			"type": "section",

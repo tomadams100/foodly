@@ -1,5 +1,5 @@
 const CronJob = require('cron').CronJob
-const winningSuggestionMsg = require('../messages/winningSuggestionMsg')
+const winningSuggestionMsg = require('../messages/winningSuggestionMsg').blocks
 const DB = require('../DB')
 const moment = require('moment')
 
@@ -13,7 +13,8 @@ const cronJob = async (app) => {
                 app.client.chat.postMessage({
                     token: process.env.SLACK_BOT_TOKEN,
                     channel: userId, 
-                    text: 'Winning suggestion message'
+                    text: 'Text',
+                    blocks: winningSuggestionMsg
                 })
             })
         }

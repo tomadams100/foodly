@@ -3,12 +3,8 @@ const DB = require('../DB')
 
 const homeView = async (event, client) => {
 
-async function getMorningMsgTime () {
-    return await DB.getMorningMsgTime()
-}
-async function getVoteCloseTime () {
-    return await DB.getVoteCloseTime()
-}
+const getMorningMsgTime = async () => await DB.getMorningMsgTime()
+const getVoteCloseTime = async () => await DB.getVoteCloseTime()
 
 await client.views.publish({
     user_id: event.user,
