@@ -1,10 +1,11 @@
 const CronJob = require('cron').CronJob
-const winningSuggestionMsg = require('../messages/winningSuggestionMsg').blocks
 const DB = require('../DB')
 const moment = require('moment')
 
 const cronJob = async (app) => {
     new CronJob('* * * * *', async () => {
+    const winningSuggestionMsg = await require('../messages/winningSuggestionMsg')()
+    const winngingSuggestionMsgBlocks = winningSuggestionMsg.blocks
         const closeVoteTime = await DB.getVoteCloseTime()
         let now = moment().format('HH:mm')
         if (now === closeVoteTime) {
@@ -14,7 +15,7 @@ const cronJob = async (app) => {
                     token: process.env.SLACK_BOT_TOKEN,
                     channel: userId, 
                     text: 'Text',
-                    blocks: winningSuggestionMsg
+                    blocks: winngingSuggestionMsgBlocks
                 })
             })
         }

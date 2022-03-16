@@ -6,13 +6,18 @@ module.exports = function (app) {
         await ack();
         const placeName = props.action.value
         console.log('You typed in the lunch place name text box:', placeName)
-        await DB.setLunchPlaceName({placeName})
+        await DB.setLunchPlaceName({placeName, app})
     })
 
     app.action('click_submit_suggestion', async (props) => {
-        //console.log('props', props)
         const { ack } = props
         await ack();
         console.log('You clicked on the submit suggestion button')
+    })
+
+    app.action('vote_radio', async (props) => {
+        const { ack } = props
+        await ack();
+        console.log('You voted for', props.payload.selected_option.value)
     })
 }
