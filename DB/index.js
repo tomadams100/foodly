@@ -13,6 +13,7 @@ admin.initializeApp({ projectId: "foodly-9d66e" });
 const send_msg_time = admin.firestore().collection('settings').doc('send_msg_time');
 const close_vote_time = admin.firestore().collection('settings').doc('close_vote_time');
 const daily_vote_suggestions = admin.firestore().collection('daily_vote').doc('suggestions');
+const messagesData = admin.firestore().collection('messagesData').doc('messages');
 
 
 // Check to see if the database is blank
@@ -63,24 +64,26 @@ const getVoteCloseTime = async () => {
 
 const setLunchPlaceName = async ({placeName, app}) => {
     const data = await daily_vote_suggestions.get()
-    //console.log('app', util.inspect(app, showHidden=false, depth=5, colorize=true))
     let suggestion = {place: placeName, suggestedBy: 'Tom', votes: 0}
     if (typeof data._fieldsProto !== 'undefined') {
         await daily_vote_suggestions.update({
             name: FieldValue.arrayUnion(suggestion)
         });
-        const allUserIds = await require('../foodlyFunctions/getUserIds')(app)
         const welcomeMessage = await require('../messages/welcomeMessage')()
         const welcomeMessageOptions = welcomeMessage.blocks
-        allUserIds.forEach(userId => {
+        const msgData = await messagesData.get()
+        const numberOfMessages = msgData._fieldsProto.name.arrayValue.values.length
+        for (let i = 0; i < numberOfMessages; i++) {
+            const ts = msgData._fieldsProto.name.arrayValue.values[i].mapValue.fields.ts.stringValue
+            const channelId = msgData._fieldsProto.name.arrayValue.values[i].mapValue.fields.channelId.stringValue
             app.client.chat.update({
                 token: process.env.SLACK_BOT_TOKEN,
-                channel: userId,
-                ts: '1647359394.000005',
+                channel: channelId,
+                ts: ts,
                 text:'some text',
                 blocks: welcomeMessageOptions
             })
-        })
+        }
         return
     }
     await daily_vote_suggestions.set({
@@ -89,6 +92,21 @@ const setLunchPlaceName = async ({placeName, app}) => {
     await daily_vote_suggestions.update({
         name: FieldValue.arrayUnion(placeName)
     });
+    const welcomeMessage = await require('../messages/welcomeMessage')()
+    const welcomeMessageOptions = welcomeMessage.blocks
+    const msgData = await messagesData.get()
+    const numberOfMessages = msgData._fieldsProto.name.arrayValue.values.length
+    for (let i = 0; i < numberOfMessages; i++) {
+        const ts = msgData._fieldsProto.name.arrayValue.values[i].mapValue.fields.ts.stringValue
+        const channelId = msgData._fieldsProto.name.arrayValue.values[i].mapValue.fields.channelId.stringValue
+        app.client.chat.update({
+            token: process.env.SLACK_BOT_TOKEN,
+            channel: channelId,
+            ts: ts,
+            text:'some text',
+            blocks: welcomeMessageOptions
+        })
+    }
 }
 
 const getLunchPlaceNames = async () => {
@@ -126,10 +144,24 @@ const getWinningPlace = async () => {
             }  
         } 
     })
-    //console.log('winningPlace', winningPlace)
     return winningPlace
 }
-getWinningPlace()
+
+const setMsgDetails = async ({msgDataObj}) => {
+    const data = await messagesData.get()
+    if (typeof data._fieldsProto !== 'undefined') {
+        await messagesData.update({
+            name: FieldValue.arrayUnion(msgDataObj)
+        });
+        return
+    }
+    await messagesData.set({
+        name: []
+    });
+    await messagesData.update({
+        name: FieldValue.arrayUnion(msgDataObj)
+    });
+}
 
 module.exports = {
     setMorningMsgTime,
@@ -138,5 +170,6 @@ module.exports = {
     getVoteCloseTime,
     setLunchPlaceName,
     getLunchPlaceNames,
-    getWinningPlace
+    getWinningPlace,
+    setMsgDetails
 }

@@ -5,9 +5,7 @@ const getAllUsersIds = async (app) => {
 	const allMembers = allUsers.members
 	allMembers.forEach(user => {
 		allUserIds.push(user.id)
-		//console.log('user: ', user)
 	})
-	//console.log('allUserIds: ', allUserIds)
     return allUserIds
 }
 
