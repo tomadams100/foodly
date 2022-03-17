@@ -1,8 +1,18 @@
 const DB = require('../DB')
 
-const welcomeMessage = async () => {
+const welcomeMessage = async (app) => {
 	
-	const vote_options = async () => await DB.getLunchPlaceNames()
+	const vote_options = async () => await DB.getLunchPlaceNames(app)
+	const place_options = async () => await DB.getAllSuggestionNames()
+
+	let selected_option = 'default'
+
+	app.action('select_place_option', async (props) => {
+        const { ack } = props
+        await ack();
+        console.log('You selected', props.payload.selected_option.value)
+		selected_option = props.payload.selected_option.value
+    })
 	
 	return {
 		"blocks": [
@@ -18,6 +28,42 @@ const welcomeMessage = async () => {
 				"type": "divider"
 			},
 			{
+				"type": "section",
+				"block_id": "select_place_dropdown",
+				"text": {
+					"type": "mrkdwn",
+					"text": "Pick an item from the dropdown list"
+				},
+				"accessory": {
+					"type": "static_select",
+					"placeholder": {
+						"type": "plain_text",
+						"text": "Select an item",
+						"emoji": true
+					},
+					"options": await place_options(),
+					"action_id": "select_place_option"
+				}
+			},
+			{
+				"type": "actions",
+				"elements": [
+					{
+						"type": "button",
+						"text": {
+							"type": "plain_text",
+							"text": "Submit Suggestion",
+							"emoji": true
+						},
+						"value": selected_option,
+						"action_id": "click_submit_suggestion"
+					}
+				]
+			},
+			{
+				"type": "divider"
+			},
+			{
 				"type": "input",
 				"dispatch_action": true,
 				"element": {
@@ -26,7 +72,7 @@ const welcomeMessage = async () => {
 				},
 				"label": {
 					"type": "plain_text",
-					"text": "Recommend where to eat:",
+					"text": "Want to suggest somewhere new?",
 					"emoji": true
 				}
 			  },
@@ -59,81 +105,9 @@ const welcomeMessage = async () => {
 						"text": "Select options",
 						"emoji": true
 					},
-					"options": [
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Italian",
-								"emoji": true
-							},
-							"value": "value-0"
-						},
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Asian",
-								"emoji": true
-							},
-							"value": "value-1"
-						},
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Mexican",
-								"emoji": true
-							},
-							"value": "value-2"
-						},
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Relaxed",
-								"emoji": true
-							},
-							"value": "value-3"
-						},
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Take-away",
-								"emoji": true
-							},
-							"value": "value-4"
-						},
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Fancy",
-								"emoji": true
-							},
-							"value": "value-5"
-						},
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Good Value",
-								"emoji": true
-							},
-							"value": "value-6"
-						}
-					],
+					"options": await place_options(),
 					"action_id": "multi_static_select-action"
 				}
-			},
-			{
-				"type": "actions",
-				"elements": [
-					{
-						"type": "button",
-						"text": {
-							"type": "plain_text",
-							"text": "Submit Suggestion",
-							"emoji": true
-						},
-						"value": "click_me_123",
-						"action_id": "click_submit_suggestion"
-					}
-				]
 			},
 			{
 				"type": "divider"

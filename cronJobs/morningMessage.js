@@ -5,7 +5,7 @@ const util = require('util')
 
 const cronJob = async (app) => {
     new CronJob(`* * * * *`, async () => {
-    const welcomeMessage = await require('../messages/welcomeMessage')()
+    const welcomeMessage = await require('../messages/welcomeMessage')(app)
     const welcomeMessageOptions = welcomeMessage.blocks
         const morningMsgTime = await DB.getMorningMsgTime()
         let now = moment().format('HH:mm')
