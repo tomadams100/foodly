@@ -1,30 +1,21 @@
 const CronJob = require('cron').CronJob
 const DB = require('../DB')
 const moment = require('moment')
-const util = require('util')
+const util = require('util');
+const sendMsgAllUsers = require('../foodlyFunctions/sendMsgAllUsers');
+const today = moment().format("D.MM.YY");
 
 const cronJob = async (app) => {
     new CronJob(`* * * * *`, async () => {
     const welcomeMessage = await require('../messages/welcomeMessage')(app)
     const welcomeMessageOptions = welcomeMessage.blocks
-        const morningMsgTime = await DB.getMorningMsgTime()
+        //const morningMsgTime = await DB.getMorningMsgTime()
+        let morningMsgTime = await DB.getWorkspace()
         let now = moment().format('HH:mm')
-        if (now === morningMsgTime) {
+        if (now === morningMsgTime.settings.surveyTime) {
             const allUserIds = await require('../foodlyFunctions/getUserIds')(app)
             allUserIds.forEach(async userId => {
-                const msgData = await app.client.chat.postMessage({
-                    token: process.env.SLACK_BOT_TOKEN,
-                    channel: userId, //remove this and make it dynamic using the commented out forEach 3 lines above
-                    text:'some text',
-                    blocks: welcomeMessageOptions
-                })
-                const msgTs = msgData.ts
-                const msgChannelId = msgData.channel
-                const msgDataObj = {
-                    ts: msgTs,
-                    channelId: msgChannelId
-                }
-                await DB.setMsgDetails({ msgDataObj })
+                sendMsgAllUsers(app, welcomeMessageOptions, DB, today, userId)
             })
         }
     }, null, true, 'Europe/London').start()

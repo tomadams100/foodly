@@ -10,19 +10,23 @@ module.exports = function(app) {
         await ack();
         const timeSelected = props.payload.selected_time
 
-        await DB.setMorningMsgTime({
-            msgTime: timeSelected
-        })
+        // await DB.setMorningMsgTime({
+        //     msgTime: timeSelected
+        // })
         console.log("You tried to set the time of the morning message to: ", timeSelected)
+        const workspaceId = await DB.getWorkspace()
+        await DB.updateWorkspace({workspaceId:workspaceId.id, settings:{...workspaceId.settings, surveyTime: timeSelected}})
     })
     app.action('set_close_vote_time', async (props) => {
         const { ack } = props
         await ack();
         const timeSelected = props.payload.selected_time
     
-        await DB.setVoteCloseTime({
-            voteCloseTime: timeSelected
-        })
+        // await DB.setVoteCloseTime({
+        //     voteCloseTime: timeSelected
+        // })
         console.log("You tried to choose when to close the vote, close at ", timeSelected)
+        const workspaceId = await DB.getWorkspace()
+        await DB.updateWorkspace({workspaceId:workspaceId.id, settings:{...workspaceId.settings, winnerTime: timeSelected}})
     })
 }
