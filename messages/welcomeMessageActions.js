@@ -40,7 +40,7 @@ module.exports = function (app) {
       placeName:
         body.state.values.select_place_dropdown.select_place_option
           .selected_option.value,
-      suggestedBy: "Tom",
+      suggestedBy: body.user.name,
       votes: 0,
     };
 
