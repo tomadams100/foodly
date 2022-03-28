@@ -4,7 +4,6 @@ const moment = require("moment");
 const utils = require("./utils");
 admin.initializeApp({ projectId: "foodly-9d66e" });
 const db = admin.firestore();
-const FieldValue = require("firebase-admin").firestore.FieldValue;
 const today = moment().format("D.MM.YY");
 
 const getWorkspace = async () => {
@@ -62,7 +61,7 @@ const updateWorkspace = async ({ workspaceId, field, value, settings }) => {
   return getWorkspace();
 };
 
-//createSurvey({date:today})
+//createSurvey({ date: today });
 //updateSurvey({surveyId: 'ivHBmxnJsVJ3RQ9N9Inl', field: 'date', value: '12.12.2023'})
 //updateWorkspace({workspaceId: 'T034H9E684B', field: 'name', value: 'Tom Workspace'})
 

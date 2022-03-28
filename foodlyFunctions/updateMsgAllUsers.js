@@ -6,12 +6,8 @@ const updateMsgAllUsers = async (app, DB, userHasVoted) => {
   const welcomeMessageOptions = welcomeMessage.blocks;
 
   if (userHasVoted) {
-    welcomeMessageOptions[
-      welcomeMessageOptions.length - 1
-    ].elements[0].text.text = "Vote Submitted";
-    welcomeMessageOptions[
-      welcomeMessageOptions.length - 1
-    ].elements[0].action_id = "vote_already_submitted_button";
+    welcomeMessageOptions[welcomeMessageOptions.length - 1].elements[0].text.text = "Vote Submitted";
+    welcomeMessageOptions[welcomeMessageOptions.length - 1].elements[0].action_id = "vote_already_submitted_button";
   }
 
   const survey = await DB.getSurvey({ surveyId: today });

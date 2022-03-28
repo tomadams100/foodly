@@ -4,10 +4,7 @@ const moment = require("moment");
 
 const cronJob = async (app) => {
   new CronJob(
-    "* * * * *",
-    async () => {
-      const winningSuggestionMsg =
-        await require("../messages/winningSuggestionMsg")();
+    "* * * * *", async () => { const winningSuggestionMsg = await require("../messages/winningSuggestionMsg")();
       const winngingSuggestionMsgBlocks = winningSuggestionMsg.blocks;
       const workspace = await DB.getWorkspace();
       const closeVoteTime = workspace.settings.winnerTime;
@@ -23,11 +20,7 @@ const cronJob = async (app) => {
           });
         });
       }
-    },
-    null,
-    true,
-    "Europe/London"
-  ).start();
+    }, null, true, "Europe/London").start();
 };
 
 module.exports = cronJob;
