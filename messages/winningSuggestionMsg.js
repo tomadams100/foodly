@@ -58,7 +58,8 @@ const winngingSuggestionMsg = async () => {
               text: "See Votes",
               emoji: true,
             },
-            value: "click_me_123",
+            value: "see_votes_button",
+            action_id: "see_votes_button",
           },
           {
             type: "button",
