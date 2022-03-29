@@ -1,6 +1,7 @@
 const { App } = require("@slack/bolt")
 require('dotenv').config()
 const homeView = require('./homeView/index')
+const DB = require('./DB')
 
 const app = new App ({
 	token: process.env.SLACK_BOT_TOKEN,
@@ -20,8 +21,17 @@ const winningSuggestionMsgCronJob = require('./cronJobs/winningSuggestionMsg')(a
 // --------- HOME ------------
 
 app.event('app_home_opened', async ({event, client, logger}) => {
+	const userId = event.user
 	try {
-		homeView(event, client)
+	const workspace = await DB.getWorkspace()
+		if (typeof workspace.users === 'undefined' || !workspace.users.includes(userId)) {
+			let joined = false
+			homeView(event, client, joined)
+		}
+		else if (workspace.users.includes(userId)) {
+			let joined = true
+			homeView(event, client, joined)
+		}
 	}
 	catch(error) {
 		logger.error(error)
