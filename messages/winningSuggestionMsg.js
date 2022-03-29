@@ -12,14 +12,11 @@ const winngingSuggestionMsg = async () => {
   if (survey.suggestions) {
     for (let i = 0; i < survey.suggestions.length; i++) {
       if (survey.suggestions[i].votes > winningPlace.votes) {
-        winningPlace = {
-          placeName: survey.suggestions[i].placeName,
-          suggestedBy: survey.suggestions[i].suggestedBy,
-          votes: survey.suggestions[i].votes,
-        };
+        winningPlace = {...survey.suggestions[i]}
       }
     }
   }
+  
   return {
     blocks: [
       {

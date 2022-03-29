@@ -37,15 +37,6 @@ const welcomeMessage = async (app) => {
   const place_options = async () => {
     const workspace = await DB.getWorkspace();
     const workspace_suggestions = workspace.suggestions;
-    // if (typeof workspace_suggestions === 'undefined') {
-    //   await DB.updateWorkspace({
-    //     surveyId: today, field: 'suggestions', value:[{
-    //       placeName: 'Sample Place',
-    //       googleMaps: 'www.sampleplace.com',
-    //       tags:['Sample Tag']
-    //     }]
-    //   })
-    // }
     const survey = await DB.getSurvey({ surveyId: today });
     let survey_suggestions = [];
     if (survey.suggestions) {
@@ -53,10 +44,8 @@ const welcomeMessage = async (app) => {
         (elem) => elem[1].placeName
       );
     }
-
     const options = diff(workspace_suggestions, survey_suggestions).map(
       (elem) => {
-      console.log('elem', elem)  
           return {
             text: {
               type: "plain_text",
@@ -74,7 +63,9 @@ const welcomeMessage = async (app) => {
 
   app.action("select_place_option", async (props) => {
     const { ack } = props;
-    await ack();
+    try {
+      await ack();
+    } catch (err) {console.log(err)}
     console.log("You selected", props.payload.selected_option.value);
     selected_option = props.payload.selected_option.value;
   });

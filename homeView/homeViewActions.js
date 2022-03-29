@@ -1,5 +1,7 @@
 const homeView = require(".");
 const DB = require("../DB");
+const moment = require('moment')
+const today = moment().format("D.MM.YY");
 
 module.exports = function (app) {
   app.action("join_foodly", async (props) => {
