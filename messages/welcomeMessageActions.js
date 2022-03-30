@@ -266,11 +266,19 @@ module.exports = function (app) {
       });
       //app.event('app_home_opened', async ({event}) => {
       
+      if (survey.usersVoted) {
+        await DB.updateSurvey({
+          surveyId: today,
+          field: "usersVoted",
+          value: [...survey.usersVoted, userId]
+        })
+      } else {
         await DB.updateSurvey({
           surveyId: today,
           field: "usersVoted",
           value: [userId]
         })
+      }
         
         updateMsgAllUsers(app, DB, userId);
       //})
