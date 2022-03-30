@@ -17,6 +17,29 @@ const winngingSuggestionMsg = async () => {
     }
   }
   
+  const workspace = await DB.getWorkspace();
+  let winnerForHistory = {}
+  let alreadySavedWinner = false
+  for (let i = 0; i < workspace.suggestions.length; i++) {
+    if (winningPlace.placeName === workspace.suggestions[i].placeName) {
+      winnerForHistory = workspace.suggestions[i]
+      winnerForHistory.suggestedBy = winningPlace.suggestedBy
+      winnerForHistory.votes = winningPlace.votes
+      winnerForHistory.date = today
+    }
+  }
+  if (typeof workspace.winHistory !== 'undefined') {
+    for (let i = 0; i < workspace.winHistory.length; i++) {
+      if (workspace.winHistory[i].date === today) alreadySavedWinner = true
+    }
+    if (!alreadySavedWinner) {
+      if (workspace.winHistory) await DB.updateWorkspace({workspaceId: workspace.id, field: 'winHistory', value: [...workspace.winHistory, winnerForHistory]})
+      else await DB.updateWorkspace({workspaceId: workspace.id, field: 'winHistory', value: [winnerForHistory]})
+    }
+  } else {
+    await DB.updateWorkspace({workspaceId: workspace.id, field: 'winHistory', value: [winnerForHistory]})
+  }
+
   return {
     blocks: [
       {
@@ -33,7 +56,7 @@ const winngingSuggestionMsg = async () => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `The winning place is: \n ${winningPlace.placeName} \n Suggested by *${winningPlace.suggestedBy}*`,
+          text: `The winning place is: \n ${winningPlace.placeName} with ${winningPlace.votes} votes. \n Suggested by *${winningPlace.suggestedBy}*`,
         },
         accessory: {
           type: "image",

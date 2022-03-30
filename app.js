@@ -15,6 +15,20 @@ require('./homeView/homeViewActions')(app)
 require('./messages/welcomeMessageActions')(app)
 require('./messages/winningSuggestionMsgActions')(app)
 
+
+const setupDB = async () => {
+	const workspace = await DB.getWorkspace()
+	await DB.updateWorkspace({workspaceId: workspace.id, field: 'winHistory', value:[...workspace.winHistory, {
+		date: '18.03.22',
+		googleMaps: 'www.link.com',
+		placeName: "Turkish Food Shop",
+		suggestedBy: 'Rich',
+		tags: ['Mexican', 'Asian'],
+		votes: 3
+	}]})
+}
+// setupDB()
+
 // Invoke Cron Jobs
 const morningMsgCronJob = require('./cronJobs/morningMessage')(app)
 const winningSuggestionMsgCronJob = require('./cronJobs/winningSuggestionMsg')(app)

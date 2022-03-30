@@ -1,6 +1,32 @@
 const DB = require("../DB");
 
 const homeView = async (event, client, joined) => {
+  
+  function objToArr (arr) {
+    return newArr = arr.reduce((elem, currentValue) => {
+      elem[currentValue] ? elem[currentValue]++ : elem[currentValue] = 1
+      return elem
+    }, {})
+  }
+
+  const workspace = await DB.getWorkspace()
+  const podiumText = ``
+  if (workspace.winHistory) {
+    const winnersNames = objToArr(workspace.winHistory.map(elem => elem.suggestedBy))
+    const winnersNamesSorted = Object.entries(winnersNames).sort((a,b) => {
+      if (b[1] > a[1]) return 1
+      else if (b[1] < a[1]) return -1
+      else {
+        if (a[0] > b[0]) return 1
+        else if (a[0] < b[0]) return -1
+        else return 0
+      }
+    }).slice(0,3)
+    podiumText = `1st - ${winnersNamesSorted[0][0]} (${winnersNamesSorted[0][1]} wins) \n 2nd - ${winnersNamesSorted[1][0]} (${winnersNamesSorted[1][1]} wins) \n 3rd - ${winnersNamesSorted[2][0]} (${winnersNamesSorted[2][1]} wins)`
+  } else {
+    podiumText = `No winners yet.`
+  }
+
   if (joined === false) {
     await client.views.publish({
       user_id: event.user,
@@ -94,7 +120,7 @@ const homeView = async (event, client, joined) => {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: "1st - Person One (7 wins) \n 2nd - Person Two (5 wins) \n 3rd - Person Three (4 wins)",
+            text: podiumText,
           },
         },
         {
