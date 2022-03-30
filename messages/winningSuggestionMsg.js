@@ -5,8 +5,8 @@ const today = moment().format("D.MM.YY");
 const winngingSuggestionMsg = async () => {
   const survey = await DB.getSurvey({ surveyId: today });
   let winningPlace = {
-    placeName: "some random name",
-    suggestedBy: "random person",
+    placeName: "Place holder name",
+    suggestedBy: "Place holder person",
     votes: 0,
   };
   if (survey.suggestions) {

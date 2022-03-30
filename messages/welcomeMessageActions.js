@@ -150,7 +150,7 @@ module.exports = function (app) {
   })
 
   app.view('create_new_suggestion_modal_view', async (props) => {
-    const { ack, body, view, client } = props
+    const { ack, view } = props
     try {
       await ack()
     } catch (err) {console.log(err)}
@@ -221,7 +221,6 @@ module.exports = function (app) {
   app.action("vote_radio", async (props) => {
     const { ack } = props;
     try {
-
       await ack();
     } catch (err) {console.log(err)}
     return;
@@ -264,7 +263,6 @@ module.exports = function (app) {
         field: "suggestions",
         value: survey.suggestions,
       });
-      //app.event('app_home_opened', async ({event}) => {
       
       if (survey.usersVoted) {
         await DB.updateSurvey({
@@ -281,8 +279,6 @@ module.exports = function (app) {
       }
         
         updateMsgAllUsers(app, DB, userId);
-      //})
     } catch (err) {console.log(err)}
-
   });
 };

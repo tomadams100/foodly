@@ -13,9 +13,6 @@ const cronJob = async (app) => {
               let now = moment().format('HH:mm')
               if (now === morningMsgTime.settings.surveyTime) {
                   const allUserIds = await require('../foodlyFunctions/getUserIds')(app)
-                  // allUserIds.forEach(async userId => {
-                  //     sendMsgAllUsers(app, welcomeMessageOptions, DB, today, userId)
-                  // })
                   for (let i = 0; i < allUserIds.length; i++) {
                       sendMsgAllUsers(app, welcomeMessageOptions, DB, today, allUserIds[i])
                   }

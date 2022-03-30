@@ -72,9 +72,6 @@ const homeView = async (event, client, joined) => {
       },
     });
   } else {
-
-  
-
   const getMorningMsgTime = async () => {
     const data = await DB.getWorkspace();
     return data.settings.surveyTime;

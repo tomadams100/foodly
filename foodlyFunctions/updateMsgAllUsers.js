@@ -8,7 +8,6 @@ const updateMsgAllUsers = async (app, DB, userId) => {
     const welcomeMessage = await require("../messages/welcomeMessage")(app);
     const welcomeMessageOptions = welcomeMessage.blocks;
     
-    //console.log(welcomeMessageOptions[2].accessory.options);
     const survey = await DB.getSurvey({ surveyId: today });
     const messages = survey.messages;
     const numberOfMessages = messages.length;
@@ -28,7 +27,6 @@ const updateMsgAllUsers = async (app, DB, userId) => {
       console.log('update message')
       const ts = messages[i].ts;
       const channelId = messages[i].channelId;
-      //console.log({ ts, channelId });
       app.client.chat.update({
         token: process.env.SLACK_BOT_TOKEN,
         channel: channelId,

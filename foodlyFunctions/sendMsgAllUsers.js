@@ -29,7 +29,6 @@ const sendMsgAllUsers = async (
         value: [{ ts: msgData.ts, channelId: msgData.channel }],
       });
     }
-    //console.log({ userId, "channelid:": msgData.channel });
   } catch (err) {console.log(err)}
 };
 
