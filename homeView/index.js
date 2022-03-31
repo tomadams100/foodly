@@ -10,7 +10,7 @@ const homeView = async (event, client, joined) => {
   }
 
   const workspace = await DB.getWorkspace()
-  const podiumText = ``
+  let podiumText = ``
   if (workspace.winHistory) {
     const winnersNames = objToArr(workspace.winHistory.map(elem => elem.suggestedBy))
     const winnersNamesSorted = Object.entries(winnersNames).sort((a,b) => {

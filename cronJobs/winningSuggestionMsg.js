@@ -1,6 +1,8 @@
 const CronJob = require("cron").CronJob;
 const DB = require("../DB");
 const moment = require("moment");
+const sendWinningMsgAllUsers = require("../foodlyFunctions/sendWinningMsgAllUsers");
+const today = moment().format("D.MM.YY");
 
 const cronJob = async (app) => {
   new CronJob(
@@ -14,14 +16,9 @@ const cronJob = async (app) => {
       let now = moment().format("HH:mm");
       if (now === closeVoteTime) {
         const allUserIds = await require("../foodlyFunctions/getUserIds")(app);
-        allUserIds.forEach((userId) => {
-          app.client.chat.postMessage({
-            token: process.env.SLACK_BOT_TOKEN,
-            channel: userId,
-            text: "Text",
-            blocks: winngingSuggestionMsgBlocks,
-          });
-        });
+        for (let i = 0; i < allUserIds.length; i++) {
+          sendWinningMsgAllUsers(app, winngingSuggestionMsgBlocks, DB, today, allUserIds[i])
+        }
       }
     }, null, true, "Europe/London").start();
 };

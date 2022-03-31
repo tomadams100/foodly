@@ -6,7 +6,6 @@ const sendMsgAllUsers = async (
   userId
 ) => {
   try {
-
     const msgData = await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: userId,
@@ -19,14 +18,14 @@ const sendMsgAllUsers = async (
         field: "messages",
         value: [
           ...survey.messages,
-          { ts: msgData.ts, channelId: msgData.channel },
+          { ts: msgData.ts, channelId: msgData.channel, msgType: 'survey' },
         ],
       });
     } else {
       await DB.updateSurvey({
         surveyId: today,
         field: "messages",
-        value: [{ ts: msgData.ts, channelId: msgData.channel }],
+        value: [{ ts: msgData.ts, channelId: msgData.channel, msgType: 'survey' }],
       });
     }
   } catch (err) {console.log(err)}

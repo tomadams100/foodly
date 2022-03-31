@@ -85,10 +85,10 @@ const winngingSuggestionMsg = async () => {
             type: "button",
             text: {
               type: "plain_text",
-              text: "Copy Address",
+              text: "Launch Lunch Chat",
               emoji: true,
             },
-            value: "click_me_123",
+            action_id: "launch_lunch_chat_button",
           },
           {
             type: "button",

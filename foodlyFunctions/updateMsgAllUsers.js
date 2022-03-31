@@ -24,16 +24,17 @@ const updateMsgAllUsers = async (app, DB, userId) => {
     }
     
     for (let i = 0; i < numberOfMessages; i++) {
-      console.log('update message')
       const ts = messages[i].ts;
       const channelId = messages[i].channelId;
-      app.client.chat.update({
-        token: process.env.SLACK_BOT_TOKEN,
-        channel: channelId,
-        ts: ts,
-        text: "some text",
-        blocks: welcomeMessageOptions,
-      });
+      if (messages[i].msgType === 'survey') {
+        app.client.chat.update({
+          token: process.env.SLACK_BOT_TOKEN,
+          channel: channelId,
+          ts: ts,
+          text: "some text",
+          blocks: welcomeMessageOptions,
+        });
+      }
     }
   } catch (err) {console.log(err)}
 };
