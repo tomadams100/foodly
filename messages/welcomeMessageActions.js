@@ -176,8 +176,10 @@ module.exports = function (app) {
           value: [suggestion],
         });
       }
-  
-      updateMsgAllUsers(app, DB);
+      const allUserIds = await require('../foodlyFunctions/getUserIds')(app)
+      for (let i = 0; i < allUserIds.length; i++) {
+        updateMsgAllUsers(app, DB, allUserIds[i]);
+      }
     } catch (err) {console.log(err)}
   })
 
