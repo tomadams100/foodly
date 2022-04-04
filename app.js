@@ -31,6 +31,10 @@ require('./messages/winningSuggestionMsgActions')(app)
 // Invoke Cron Jobs
 const morningMsgCronJob = require('./cronJobs/morningMessage')(app)
 const winningSuggestionMsgCronJob = require('./cronJobs/winningSuggestionMsg')(app)
+const archiveFoodlyLunchChatCronJob = require('./cronJobs/archiveFoodlyLunchChat')(app)
+
+// Invoke Commands
+const command = require('./commands/index')(app)
 // --------- HOME ------------
 
 app.event('app_home_opened', async ({event, client, logger}) => {

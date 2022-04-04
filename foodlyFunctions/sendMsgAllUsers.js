@@ -9,6 +9,7 @@ const sendMsgAllUsers = async (
     const msgData = await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: userId,
+      text: 'text',
       blocks: welcomeMessageOptions,
     });
     const survey = await DB.getSurvey({ surveyId: today });
