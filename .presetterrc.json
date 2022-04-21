@@ -1,0 +1,4 @@
+{
+  "preset": "presetter-preset-essentials",
+  "variable": { "source": "src" }
+}

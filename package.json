@@ -6,18 +6,28 @@
     "firebase": "^9.6.9",
     "firebase-admin": "^10.0.2",
     "firebase-tools": "^10.4.1",
+    "googleapis": "^100.0.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "nodemon": "^2.0.15"
   },
   "name": "foodly",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "lib/app.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "build": "run build",
+    "prepare": "presetter bootstrap && run prepare",
+    "lint": "run lint",
+    "start": "nodemon -e ts,js node_modules/.bin/ts-node -r tsconfig-paths/register src/index.ts",
+    "test": "run test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "presetter": "^3.1.1",
+    "presetter-preset-essentials": "^3.1.1"
+  }
 }

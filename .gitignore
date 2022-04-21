@@ -1,3 +1,12 @@
+/lib
+/coverage
 node_modules
-.env**
-service-account**
+/.babelrc.json
+/.eslintrc.json
+/.husky
+/.jestrc.json
+/.gitignore
+/.lintstagedrc.json
+/.npmignore
+/.prettierrc.json
+/tsconfig.*
