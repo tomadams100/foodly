@@ -10,3 +10,5 @@ node_modules
 /.npmignore
 /.prettierrc.json
 /tsconfig.*
+.env**
+service-account**
