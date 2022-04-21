@@ -12,3 +12,5 @@ node_modules
 /tsconfig.*
 .env**
 service-account**
+firebase-debug**
+firestore-debug**
